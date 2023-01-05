@@ -1,8 +1,11 @@
 import 'dotenv/config'
 import express, { Request } from 'express'
+import authMiddleware from './authMiddleware'
 import messages from './messages'
 
 const app = express()
+
+app.use(authMiddleware)
 
 app.get('/:number/messages', async (req, res) => {
     const number = Number(req.params.number)
