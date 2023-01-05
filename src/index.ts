@@ -12,7 +12,7 @@ app.get('/:number/messages', async (req, res) => {
     res.json({ send: true })
 })
 
-app.get('/webhooks/messages', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
+app.get('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
     /*
     const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
 
