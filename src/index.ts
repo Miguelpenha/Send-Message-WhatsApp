@@ -12,16 +12,20 @@ app.get('/:number/messages', async (req, res) => {
     res.json({ send: true })
 })
 
-app.post('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
+app.get('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
     const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
 
     if (verifyToken === process.env.VERIFY_TOKEN) {
-        
+        res.send(challenge)
+    } else {
+        res.sendStatus(403)
     }
+})
 
+app.post('/webhooks', (req, res) => {
     console.log(req.body)
 
-    res.send(challenge)
+    res.send(req.body)
 })
 
 app.listen(process.env.PORT, () => console.log('Servidor rodando'))
