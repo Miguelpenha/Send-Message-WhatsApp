@@ -16,10 +16,12 @@ app.post('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'h
     const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
 
     if (verifyToken === process.env.VERIFY_TOKEN) {
-        console.log(req.body)
-
-        res.send(challenge)
+        
     }
+
+    console.log(req.body)
+
+    res.send(challenge)
 })
 
 app.listen(process.env.PORT, () => console.log('Servidor rodando'))
