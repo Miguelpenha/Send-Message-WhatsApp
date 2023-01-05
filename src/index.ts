@@ -1,5 +1,5 @@
 import 'dotenv/config'
-import express from 'express'
+import express, { Request } from 'express'
 import messages from './messages'
 
 const app = express()
@@ -12,8 +12,14 @@ app.get('/:number/messages', async (req, res) => {
     res.json({ send: true })
 })
 
-app.post('/webhooks', (req, res) => {
-    console.log(req)
+app.post('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
+    const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
+
+    console.log(req.body)
+
+    if (verifyToken === process.env.VERIFY_TOKEN) {
+        res.send(challenge)
+    }
 })
 
 app.listen(process.env.PORT, () => console.log('Servidor rodando'))
