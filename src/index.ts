@@ -1,18 +1,19 @@
 import 'dotenv/config'
 import express, { Request } from 'express'
-import authMiddleware from './authMiddleware'
 import messages from './messages'
 
 const app = express()
 
-app.use(authMiddleware)
-
 app.get('/:number/messages', async (req, res) => {
-    const number = Number(req.params.number)
+    if (req.header('Authorization').replace('Bearer ', '') === process.env.TOKEN_ACCESS_API) {
+        const number = Number(req.params.number)
 
-    await messages(number)
-    
-    res.json({ send: true })
+        await messages(number)
+        
+        res.json({ send: true })
+    } else {
+        res.sendStatus(403)
+    }
 })
 
 app.get('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
