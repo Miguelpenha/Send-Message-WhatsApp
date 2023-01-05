@@ -15,9 +15,9 @@ app.get('/:number/messages', async (req, res) => {
 app.post('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
     const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
 
-    console.log(req.body)
-
     if (verifyToken === process.env.VERIFY_TOKEN) {
+        console.log(req.body)
+
         res.send(challenge)
     }
 })
