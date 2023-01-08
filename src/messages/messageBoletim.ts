@@ -1,13 +1,13 @@
 import { IRequestMessage } from '../types'
 import sendMessage from '../services/sendMessage'
 
-async function messageBoleto(phoneToReceive: number, dateBoleto: string, urlBoleto: string) {
+async function messageBoletim(phoneToReceive: number, image: string, nameResponsible: string) {
     const data: IRequestMessage = {
         type: 'template',
         to: String(phoneToReceive),
         messaging_product: 'whatsapp',
         template: {
-            name: 'boleto',
+            name: 'boletim',
             language: {
                 code: 'pt_BR'
             },
@@ -16,19 +16,23 @@ async function messageBoleto(phoneToReceive: number, dateBoleto: string, urlBole
                     type: 'header',
                     parameters: [
                         {
-                            type: 'text',
-                            text: dateBoleto
+                            type: 'image',
+                            image: {
+                                link: image
+                            }
                         }
                     ]
                 },
                 {
-                    index: 0,
-                    type: 'button',
-                    sub_type: 'URL',
+                    type: 'body',
                     parameters: [
                         {
                             type: 'text',
-                            text: urlBoleto
+                            text: nameResponsible
+                        },
+                        {
+                            type: 'text',
+                            text: nameResponsible
                         }
                     ]
                 }
@@ -41,4 +45,4 @@ async function messageBoleto(phoneToReceive: number, dateBoleto: string, urlBole
     return message
 }
 
-export default messageBoleto
+export default messageBoletim

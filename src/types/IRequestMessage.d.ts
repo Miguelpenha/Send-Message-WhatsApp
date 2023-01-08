@@ -1,13 +1,16 @@
 interface IParameter {
-    type: 'text'
-    text: string
+    text?: string
+    type: 'text' | 'image'
+    image?: {
+        link: string
+    }
 }
 
 interface IComponent {
     index?: number
     sub_type?: 'URL'
     parameters: IParameter[]
-    type: 'header' | 'button'
+    type: 'header' | 'body' | 'button'
 }
 
 interface IRow {
@@ -30,6 +33,9 @@ export interface IRequestMessage {
     type?: 'text' | 'image' | 'template' | 'location' | 'reaction' | 'interactive'
     image?: {
         link: string
+    }
+    body?: {
+        text: string
     }
     context?: {
         message_id: string
