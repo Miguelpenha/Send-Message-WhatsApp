@@ -1,35 +1,56 @@
 import 'dotenv/config'
 import express, { Request } from 'express'
 import messages from './messages'
+import templates from './templates'
 
-const app = express()
+const app = express() 
 
-app.get('/:number/messages', async (req, res) => {
+app.use(express.json())
+
+interface IMessagesParams {
+    number: string
+    typeMessage: keyof typeof messages
+}
+
+app.get('/:number/messages/:typeMessage', async (req: Request<IMessagesParams>, res) => {
     if (req.header('Authorization').replace('Bearer ', '') === process.env.TOKEN_ACCESS_API) {
-        const number = Number(req.params.number)
-
-        await messages(number)
+        const { number, typeMessage } = req.params
         
-        res.json({ send: true })
+        try {
+            const message = await messages[typeMessage](Number(number), req.body)
+            
+            res.json({ send: true, message })
+        } catch (error) {
+            console.log(error)
+
+            res.json({ send: false })
+        }
     } else {
         res.sendStatus(403)
     }
 })
 
-app.get('/webhooks', (req: Request<{}, {}, {}, { 'hub.verify_token': string, 'hub.challenge': number }>, res) => {
-    const { 'hub.verify_token': verifyToken, 'hub.challenge': challenge } = req.query
+interface ITemplatesParams {
+    number: string
+    typeTemplate: keyof typeof templates
+}
 
-    if (verifyToken === process.env.VERIFY_TOKEN) {
-        res.send(challenge)
+app.get('/:number/templates/:typeTemplate', async (req: Request<ITemplatesParams>, res) => {
+    if (req.header('Authorization').replace('Bearer ', '') === process.env.TOKEN_ACCESS_API) {
+        const { number, typeTemplate } = req.params
+        
+        try {
+            const message = await templates[typeTemplate](Number(number), req.body)
+            
+            res.json({ send: true, message })
+        } catch (error) {
+            console.log(error)
+
+            res.json({ send: false })
+        }
     } else {
         res.sendStatus(403)
     }
-})
-
-app.post('/webhooks', (req, res) => {
-    console.log(req.body)
-
-    res.send(req.body)
 })
 
 app.listen(process.env.PORT, () => console.log('Servidor rodando'))

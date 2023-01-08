@@ -1,7 +1,7 @@
 import { IRequestMessage } from '../types'
 import sendMessage from '../services/sendMessage'
 
-async function messageReply(phoneToReceive: number, messageID: string) {
+async function messageReply(phoneToReceive: number, params: { messageID: string }) {
     const data: IRequestMessage =  {
         type: 'text',
         to: String(phoneToReceive),
@@ -11,7 +11,7 @@ async function messageReply(phoneToReceive: number, messageID: string) {
             body: 'Ok, iremos verificar isso'
         },
         context: {
-            message_id: messageID
+            message_id: params.messageID
         }
     }
 
