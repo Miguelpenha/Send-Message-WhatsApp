@@ -1,26 +1,15 @@
-import { IRequestMessage } from '../types'
-import sendMessage from '../services/sendMessage'
+import { IParams } from './type'
+import { IRequestMessage } from '../../types'
+import formatGrade from './formatGrade'
+import selectNote from './selectNote'
 
-interface IGrades {
-    math: number
-    history: number
-    geography: number
-    portuguese: number
-}
-
-function formatGrade(gradeRaw: number) {
-    const grade = Number(gradeRaw).toFixed(2).replace('.', ',')
-
-    return grade
-}
-
-async function templateBoletim(phoneToReceive: number, params: { image: string, nameResponsible: string, nameStudent: string, grades: IGrades }) {
-    const data: IRequestMessage = {
+function generateData(phoneToReceive: number, params: IParams): IRequestMessage {
+    return {
         type: 'template',
         to: String(phoneToReceive),
         messaging_product: 'whatsapp',
         template: {
-            name: 'boletim',
+            name: 'notas_escolares',
             language: {
                 code: 'pt_BR'
             },
@@ -41,11 +30,15 @@ async function templateBoletim(phoneToReceive: number, params: { image: string, 
                     parameters: [
                         {
                             type: 'text',
-                            text: params.nameResponsible
+                            text: params.responsible
                         },
                         {
                             type: 'text',
-                            text: params.nameStudent
+                            text: String(params.unit)
+                        },
+                        {
+                            type: 'text',
+                            text: params.student
                         },
                         {
                             type: 'text',
@@ -65,17 +58,32 @@ async function templateBoletim(phoneToReceive: number, params: { image: string, 
                         },
                         {
                             type: 'text',
-                            text: params.nameStudent
+                            text: formatGrade(params.grades.sciences)
+                        },
+                        {
+                            type: 'text',
+                            text: formatGrade(params.grades.english)
+                        },
+                        {
+                            type: 'text',
+                            text: selectNote(params)
+                        },
+                    ]
+                },
+                {
+                    index: 1,
+                    type: 'button',
+                    sub_type: 'URL',
+                    parameters: [
+                        {
+                            type: 'text',
+                            text: params.urlBankSlip
                         }
                     ]
                 }
             ]
         }
     }
-
-    const message = await sendMessage(data)
-
-    return message
 }
 
-export default templateBoletim
+export default generateData
