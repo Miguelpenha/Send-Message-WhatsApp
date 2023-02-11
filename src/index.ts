@@ -35,14 +35,14 @@ app.post('/webhooks', (req, res) => {
             if (message.text && message.text.body) {
                 await messages['interactive'](message.from)
             } else if (message.interactive.list_reply.id) {
-                const options = message.interactive.list_reply.id
+                const option = message.interactive.list_reply.id
 
-                if (options === 'boletim') {
+                if (option === 'boleto') {
                     await templates['boleto'](message.from, {
                         urlBoleto: 'boletos/boleto.pdf',
                         dateBoleto: new Date().toLocaleDateString('pt-br')
                     })
-                } else {
+                } else if (option === 'boletim') {
                     await templates['boletim'](message.from, {
                             unit: 2,
                             urlBankSlip: '#',

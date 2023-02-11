@@ -18,11 +18,6 @@ const sections: IRequestMessage['interactive']['action']['sections'] = [
                 id: 'boletim',
                 title: 'Boletim',
                 description: 'Gerar boletim do aluno, o formato poder ser em pdf ou xlsx'
-            },
-            {
-                id: 'declaration',
-                title: 'Declaração',
-                description: 'Gerar uma declaração para o aluno, o formato é em pdf'
             }
         ]
     }
