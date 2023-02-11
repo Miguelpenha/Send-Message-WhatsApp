@@ -29,7 +29,7 @@ app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
     }
 })
 
-app.post('/webhooks/*', (req, res) => {
+app.post('/webhooks', (req, res) => {
     console.log(req.body)
 
     res.sendStatus(200)
