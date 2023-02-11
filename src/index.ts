@@ -30,8 +30,8 @@ app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
 })
 
 app.post('/webhooks', (req, res) => {
+    console.log(req.body.entry[0].changes)
     req.body.entry[0].changes[0].value.messages.map(async message => {
-        console.log(req.body.entry[0].changes)
         if (message.text.body) {
             messages['interactive'](message.from)
         }
