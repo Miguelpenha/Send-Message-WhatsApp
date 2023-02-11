@@ -1,12 +1,15 @@
 import 'dotenv/config'
 import express, { Request } from 'express'
 import xhub from 'express-x-hub'
+import morgan from 'morgan'
 import messages from './messages'
 import templates from './templates'
 
 const app = express() 
 
 app.use(express.json())
+
+app.use(morgan('dev'))
 
 interface IMessagesParams {
     number: string
