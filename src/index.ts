@@ -18,7 +18,7 @@ interface IMessagesQuery {
     'hub.verify_token': string
 }
 
-app.get('/', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
+app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
     if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] == process.env.TOKEN_VERIFICATION) {
         res.send(req.query['hub.challenge'])
     } else {
@@ -26,7 +26,7 @@ app.get('/', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
     }
 })
 
-app.post('/', (req, res) => {
+app.post('/webhooks', (req, res) => {
     console.log(req.body)
 
     res.sendStatus(200)
