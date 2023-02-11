@@ -31,11 +31,8 @@ app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
 
 app.post('/webhooks', (req, res) => {
     req.body.entry[0].changes[0].value.messages.map(async message => {
-        if (message.text.body === 'boleto') {
-            await templates['boleto'](message.from, {
-                urlBoleto: 'boletos/boleto.pdf',
-                dateBoleto: new Date().toLocaleDateString('pt-br')
-            })
+        if (message.text.body) {
+            messages['interactive'](message.from)
         }
     })
 
