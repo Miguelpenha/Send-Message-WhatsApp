@@ -34,7 +34,7 @@ app.post('/webhooks', (req, res) => {
         if (message.text.body === 'boleto') {
             await templates['boleto'](message.from, {
                 urlBoleto: 'boletos/boleto.pdf',
-                dateBoleto: new Date().toISOString()
+                dateBoleto: new Date().toLocaleDateString('pt-br')
             })
         }
     })
