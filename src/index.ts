@@ -35,10 +35,29 @@ app.post('/webhooks', (req, res) => {
             if (message.text && message.text.body) {
                 await messages['interactive'](message.from)
             } else if (message.interactive.list_reply.id) {
-                if (message.interactive.list_reply.id === 'boletim') {
+                const options = message.interactive.list_reply.id
+
+                if (options === 'boletim') {
                     await templates['boleto'](message.from, {
                         urlBoleto: 'boletos/boleto.pdf',
                         dateBoleto: new Date().toLocaleDateString('pt-br')
+                    })
+                } else {
+                    await templates['boletim'](message.from, {
+                            unit: 2,
+                            urlBankSlip: '#',
+                            gender: 'Masculino',
+                            responsible: 'Maria',
+                            student: 'José da Silva Pereira',
+                            image: 'https://i.ibb.co/J37M6PD/NOTAS.png',
+                            grades: {
+                                math: 10,
+                                history: 7,
+                                sciences: 9,
+                                english: 10,
+                                geography: 8.5,
+                                portuguese: 10
+                            }
                     })
                 }
             }

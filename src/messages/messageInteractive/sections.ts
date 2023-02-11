@@ -5,14 +5,9 @@ const sections: IRequestMessage['interactive']['action']['sections'] = [
         title: 'Pagamentos',
         rows: [
             {
-                id: 'payMonthlyPayment',
+                id: 'boleto',
                 title: 'Pagar mensalidade',
                 description: 'Pagar uma mensalidade, através de pix ou boleto'
-            },
-            {
-                id: 'CheckAMonthlyPayment',
-                title: 'Verificar mensalidade',
-                description: 'Verificar uma mensalidade específica de um mês'
             }
         ]
     },
@@ -28,21 +23,6 @@ const sections: IRequestMessage['interactive']['action']['sections'] = [
                 id: 'declaration',
                 title: 'Declaração',
                 description: 'Gerar uma declaração para o aluno, o formato é em pdf'
-            }
-        ]
-    },
-    {
-        title: 'Outros',
-        rows: [
-            {
-                id: 'contact',
-                title: 'Contato com a diretora',
-                description: 'Caso tenha algum assunto pendente, pode falar com a diretora'
-            },
-            {
-                id: 'reclamationOrSuggestion',
-                title: 'Reclamação ou sugestão',
-                description: 'Você pode relatar um problema ou fazer uma sugestão'
             }
         ]
     }
