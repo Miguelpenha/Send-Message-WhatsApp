@@ -32,10 +32,15 @@ app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
 app.post('/webhooks', (req, res) => {
     if (req.body.entry[0].changes[0].value.messages) {
         req.body.entry[0].changes[0].value.messages.map(async message => {
-            console.log(message)
-            
-            if (message.text.body) {
-                messages['interactive'](message.from)
+            if (message.text && message.text.body) {
+                await messages['interactive'](message.from)
+            } else if (message.interactive.list_reply.id) {
+                if (message.interactive.list_reply.id === 'boletim') {
+                    await templates['boleto'](message.from, {
+                        urlBoleto: 'boletos/boleto.pdf',
+                        dateBoleto: new Date().toLocaleDateString('pt-br')
+                    })
+                }
             }
         })
     }
