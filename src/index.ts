@@ -1,5 +1,6 @@
 import 'dotenv/config'
 import express, { Request } from 'express'
+import xhub from 'express-x-hub'
 import messages from './messages'
 import templates from './templates'
 
@@ -11,6 +12,25 @@ interface IMessagesParams {
     number: string
     typeMessage: keyof typeof messages
 }
+
+interface IMessagesQuery {
+    'hub.mode': string
+    'hub.verify_token': string
+}
+
+app.get('/', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
+    if (req.query['hub.mode'] === 'subscribe' && req.query['hub.verify_token'] == process.env.TOKEN_VERIFICATION) {
+        res.send(req.query['hub.challenge'])
+    } else {
+        res.sendStatus(400)
+    }
+})
+
+app.post('/', (req, res) => {
+    console.log(req.body)
+
+    res.sendStatus(200)
+})
 
 app.get('/:number/messages/:typeMessage', async (req: Request<IMessagesParams>, res) => {
     if (req.header('Authorization').replace('Bearer ', '') === process.env.TOKEN_ACCESS_API) {
