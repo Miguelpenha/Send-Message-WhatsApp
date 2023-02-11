@@ -30,8 +30,11 @@ app.get('/webhooks', (req: Request<{}, {}, {}, IMessagesQuery>, res) => {
 })
 
 app.post('/webhooks', (req, res) => {
-    req.body.entry[0].changes[0].value.messages.map(message => {
-        console.log(message.text)
+    req.body.entry[0].changes[0].value.messages.map(async message => {
+        if (message.text.body === 'boleto') {
+            // await templates['boleto']()
+            console.log(req.body.entry[0].changes[0].value)
+        }
     })
 
     res.sendStatus(200)
